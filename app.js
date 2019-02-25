@@ -40,7 +40,7 @@ App({
    * 设置api地址
    */
   setApiRoot() {
-    this.api_root = this.siteInfo.siteroot + 'index.php?s=/api/';
+    this.api_root = this.siteInfo.siteroot;
   },
 
   /**
@@ -48,10 +48,10 @@ App({
    */
   getWxappBase(callback) {
     let App = this;
-    App._get('wxapp/base', {}, function(result) {
+    App._get('app/base', {}, function (result) {
       // 记录小程序基础信息
-      wx.setStorageSync('wxapp', result.data.wxapp);
-      callback && callback(result.data.wxapp);
+      wx.setStorageSync('wxapp', result.data);
+      callback && callback(result.data);
     }, false, false);
   },
 
@@ -87,7 +87,7 @@ App({
       title: msg,
       icon: 'success',
       success() {
-        callback && (setTimeout(function() {
+        callback && (setTimeout(function () {
           callback();
         }, 1500));
       }
@@ -120,13 +120,11 @@ App({
     let App = this;
     // 构造请求参数
     data = data || {};
-    data['wxapp_id'] = 10001;
-
     // if (typeof check_login === 'undefined')
     //   check_login = true;
 
     // 构造get请求
-    let request = function() {
+    let request = function () {
       data.token = wx.getStorageSync('token');
       wx.request({
         url: App.api_root + url,
@@ -153,7 +151,7 @@ App({
         },
         fail(res) {
           // console.log(res);
-          App.showError(res.errMsg, function() {
+          App.showError(res.errMsg, function () {
             fail && fail(res);
           });
         },
@@ -173,7 +171,6 @@ App({
   _post_form(url, data, success, fail, complete) {
     wx.showNavigationBarLoading();
     let App = this;
-    data.wxapp_id = App.siteInfo.uniacid;
     data.token = wx.getStorageSync('token');
     wx.request({
       url: App.api_root + url,
@@ -189,12 +186,12 @@ App({
         }
         if (res.data.code === -1) {
           // 登录态失效, 重新登录
-          App.doLogin(function() {
+          App.doLogin(function () {
             App._post_form(url, data, success, fail);
           });
           return false;
         } else if (res.data.code === 0) {
-          App.showError(res.data.msg, function() {
+          App.showError(res.data.msg, function () {
             fail && fail(res);
           });
           return false;
@@ -203,7 +200,7 @@ App({
       },
       fail(res) {
         // console.log(res);
-        App.showError(res.errMsg, function() {
+        App.showError(res.errMsg, function () {
           fail && fail(res);
         });
       },
@@ -231,7 +228,7 @@ App({
     for (var key in data) {
       var value = data[key];
       if (value.constructor == Array) {
-        value.forEach(function(_value) {
+        value.forEach(function (_value) {
           _result.push(key + "=" + _value);
         });
       } else {
@@ -249,10 +246,10 @@ App({
       wxapp;
     if (wxapp = wx.getStorageSync('wxapp')) {
       wx.setNavigationBarTitle({
-        title: wxapp.navbar.wxapp_title
+        title: wxapp.naviBar.title
       });
     } else {
-      App.getWxappBase(function() {
+      App.getWxappBase(function () {
         App.setTitle();
       });
     }
@@ -263,11 +260,11 @@ App({
    */
   setNavigationBar() {
     // 获取小程序基础信息
-    this.getWxappBase(function(wxapp) {
+    this.getWxappBase(function (wxapp) {
       // 设置navbar标题、颜色
       wx.setNavigationBarColor({
-        frontColor: wxapp.navbar.top_text_color.text,
-        backgroundColor: wxapp.navbar.top_background_color
+        frontColor: wxapp.naviBar.topTextColor.text,
+        backgroundColor: wxapp.naviBar.topBackgroundColor
       })
     });
   },

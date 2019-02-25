@@ -32,7 +32,7 @@ Page({
    */
   getIndexData: function() {
     let _this = this;
-    App._get('index/page', {}, function(result) {
+    App._get('app/index', {}, function(result) {
       _this.setData(result.data);
     });
   },
