@@ -40,7 +40,7 @@ Page({
           , function (result) {
             // 记录token user_id
             wx.setStorageSync('token', result.data.token);
-            wx.setStorageSync('user_id', result.data.user_id);
+            wx.setStorageSync('userId', result.data.user_id);
             // 跳转回原页面
             _this.navigateBack();
           }
@@ -48,6 +48,9 @@ Page({
           , function () {
             wx.hideLoading();
           });
+      },
+      fail:function(data){
+        console.log(data);
       }
     });
   },

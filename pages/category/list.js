@@ -44,7 +44,7 @@ Page({
    */
   getGoodsList: function (is_super, page) {
     let _this = this;
-    App._get('goods/lists', {
+    App._get('product/list', {
       page: page || 1,
       sortType: this.data.sortType,
       sortPrice: this.data.sortPrice ? 1: 0,

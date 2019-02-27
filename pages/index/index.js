@@ -23,6 +23,9 @@ Page({
     App.setTitle();
     // 设置navbar标题、颜色
     App.setNavigationBar();
+  },
+
+  onShow: function() {
     // 获取首页数据
     this.getIndexData();
   },

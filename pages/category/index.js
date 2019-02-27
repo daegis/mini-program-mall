@@ -21,10 +21,14 @@ Page({
     notcont: false
   },
 
-  onLoad: function() {
+  onLoad: function () {
     let _this = this;
     // 设置分类列表高度
     _this.setListHeight();
+
+  },
+
+  onShow: function () {
     // 获取分类列表
     this.getCategoryList();
   },
@@ -32,10 +36,10 @@ Page({
   /**
    * 设置分类列表高度
    */
-  setListHeight: function() {
+  setListHeight: function () {
     let _this = this;
     wx.getSystemInfo({
-      success: function(res) {
+      success: function (res) {
         _this.setData({
           scrollHeight: res.windowHeight - 47,
         });
@@ -46,14 +50,14 @@ Page({
   /**
    * 获取分类列表
    */
-  getCategoryList: function() {
+  getCategoryList: function () {
     let _this = this;
-    App._get('product/list', {}, function(result) {
+    App._get('product/category/list', {}, function (result) {
       let data = result.data;
       _this.setData({
-        list: data.list,
-        curNav: data.list.length > 0 ? data.list[0].category_id : true,
-        notcont: !data.list.length
+        list: data,
+        curNav: data.length > 0 ? data[0].category_id : true,
+        notcont: !data.length
       });
     });
   },
@@ -61,7 +65,7 @@ Page({
   /**
    * 一级分类：选中分类
    */
-  selectNav: function(t) {
+  selectNav: function (t) {
     let curNav = t.target.dataset.id,
       curIndex = parseInt(t.target.dataset.index);
     this.setData({
@@ -74,7 +78,7 @@ Page({
   /**
    * 设置分享内容
    */
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
     return {
       title: "全部分类",
       path: "/pages/category/index"
